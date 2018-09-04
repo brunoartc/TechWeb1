@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class DAO {
@@ -40,11 +39,8 @@ public class DAO {
 				note.setBg(rs.getString("bg"));
 				note.setTitle(rs.getString("title"));
 				note.setContent(rs.getString("content"));
-				Calendar data = Calendar.getInstance();
-				data.setTime(rs.getDate("creation_date"));
-				note.setCreationDate(data);
-				data.setTime(rs.getDate("update_date"));
-				note.setUpdatedDate(data);
+				note.setCreationDate(rs.getDate("creation_date"));
+				note.setUpdatedDate(rs.getDate("update_date"));
 				Note.add(note);
 			}
 			rs.close();
@@ -55,8 +51,8 @@ public class DAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-			return null;
+
+		return null;
 	}
 
 	public void close() {
@@ -66,6 +62,41 @@ public class DAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void adiciona(Note note) {
+		String sql = "INSERT INTO Notes" + "(bg,title,content,creation_date,update_date) values(?,?,?,?,?)";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			stmt.setString(1, note.getBg());
+			stmt.setString(2, note.getTitle());
+			stmt.setString(3, note.getContent());
+			stmt.setDate(4, note.getCreationDate());
+			stmt.setDate(5, note.getUpdatedDate());
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void atualiza(Note note) {
+		String sql = "UPDATE Notes SET " + "bg=?, title=?, content=?, update_date=?";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			stmt.setString(1, note.getBg());
+			stmt.setString(2, note.getTitle());
+			stmt.setString(3, note.getContent());
+			stmt.setDate(4, note.getUpdatedDate());
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

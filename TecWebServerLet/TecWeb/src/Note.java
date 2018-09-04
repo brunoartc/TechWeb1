@@ -1,4 +1,4 @@
-import java.util.Calendar;
+import java.sql.Date;
 
 public class Note {
 
@@ -9,11 +9,25 @@ public class Note {
 	 **/
 
 	private int id;
+	public Note(String bg, String title, String content, Date creationDate, Date updatedDate) {
+		super();
+		//this.id = id;
+		this.bg = bg;
+		this.title = title;
+		this.content = content;
+		this.creationDate = creationDate;
+		this.updatedDate = updatedDate;
+	}
+
+	public Note() {
+		// TODO Auto-generated constructor stub
+	}
+
 	private String bg;
 	private String title;
 	private String content;
-	private Calendar creationDate;
-	private Calendar updatedDate;
+	private Date creationDate;
+	private Date updatedDate;
 
 	public int getId() {
 		return id;
@@ -47,19 +61,19 @@ public class Note {
 		this.content = content;
 	}
 
-	public Calendar getCreationDate() {
+	public Date getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Calendar creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	public Calendar getUpdatedDate() {
+	public Date getUpdatedDate() {
 		return updatedDate;
 	}
 
-	public void setUpdatedDate(Calendar updatedDate) {
+	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
 

@@ -1,7 +1,7 @@
 
 
 import java.io.IOException;
-import java.util.List;
+import java.sql.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class ServLet
+ * Servlet implementation class Notes
  */
-@WebServlet("/ServLet")
-public class ServLet extends HttpServlet {
+@WebServlet("/Notes/add")
+public class Notes extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ServLet() {
+    public Notes() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,14 +29,7 @@ public class ServLet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		DAO dao = new DAO();
-		StringBuilder resp = new StringBuilder();
-		List<Note> respDb = dao.getLista();
-		dao.close();
-		System.out.println(respDb.get(0).getCreationDate().toString());
-		
-		response.getWriter().append("Served at: ").append(request.getContextPath()).append(": with <3");
+		response.getWriter().append("Served with <3 at: ").append(request.getContextPath()).append(" (required parameters: bg | title | content) ").append(request.getParameter("teste"));
 	}
 
 	/**
@@ -44,6 +37,10 @@ public class ServLet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		DAO dao = new DAO();
+		System.out.println(request.getParameter("title"));
+		dao.adiciona(new Note(request.getParameter("bg"),request.getParameter("title"),request.getParameter("content"),new Date(System.currentTimeMillis()),new Date(System.currentTimeMillis())));
+		dao.close();
 		doGet(request, response);
 	}
 

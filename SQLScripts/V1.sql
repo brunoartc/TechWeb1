@@ -1,7 +1,7 @@
 CREATE TABLE Notes(
 ID int NOT NULL AUTO_INCREMENT,
 bg VARCHAR(20),
-title VARCHAR(10),
+title VARCHAR(15),
 content VARCHAR(255),
 creation_date TIMESTAMP,
 update_date TIMESTAMP,

@@ -39,6 +39,7 @@
 			StringBuilder fin = new StringBuilder();
 			StringBuilder cards = new StringBuilder();
 			for (Note x : respDb) {
+				if  (x.getActive()){
 				fin.append("{");
 				fin.append("id:\'" + x.getId() + "\',");
 				fin.append("title:\'" + x.getTitle() + "\',");
@@ -50,17 +51,17 @@
 				cards.append("<div class=\"card\" id='" + x.getId()
 						+ "' style='display: inline-block;background-color: " + x.getBg() + ";'>")
 						.append("<div class=\"card-body\">")
-						.append("<h5 class=\"card-title \" id=\"title\" contenteditable=\"true\">" + x.getTitle()
-								+ "</h5> <a onclick='updateNote(" + x.getId()
-								+ ");' data-toggle=\"modal\" data-target=\"#myModalUpdate\"><i class=\"fas fa-pencil-alt\"></i></a>")
+						.append("<a style='float:right' onclick='updateNote(" + x.getId() + ");' data-toggle=\"modal\" data-target=\"#myModalUpdate\"><i class=\"fas fa-pencil-alt\"></i></a><h5 class=\"card-title \" id=\"title\" contenteditable=\"true\">" + x.getTitle()
+								+ "</h5><a style='float:right' onclick='deleteNote(" + x.getId() + ");'><i class=\"fas fa-trash\"></i></a>")
 						.append("<p class=\"card-text\" id=\"content\" contenteditable=\"true\">" + x.getContent()
 								+ "</p>")
 						.append("<p class=\"card-text\" id=\"update\">")
 						.append("<small class=\"text-muted\">" + x.getUpdatedDate() + "</small>").append("</p>")
 						.append("</div>").append("</div>");
+				}
 
 			}
-			fin.deleteCharAt(fin.length() - 1);%>
+			if  (fin.length()>0) fin.deleteCharAt(fin.length() - 1);%>
 	var toFuzzy = [
 <%out.print(fin.toString().replace("/n", ""));%>
 	]
@@ -134,7 +135,10 @@
 		xhttp.open("POST", "http://localhost:8080/TecWeb/Notes/delete", true);
 		xhttp.setRequestHeader("Content-type",
 				"application/x-www-form-urlencoded");
-		xhttp.send("id=" + idd);
+		xhttp.send("id=" + id);
+		
+		let remuved = document.getElementById(id);
+		document.getElementById("cards").removeChild(remuved)
 
 	}
 
@@ -210,7 +214,10 @@
 		let searchinfo = document.getElementById('textopraprocura').value;
 		let search = []
 		for (i in toFuzzy){
-			search.push( toFuzzy[i].id + "]]]" + toFuzzy[i].content)
+			let splited = toFuzzy[i].content.split(" ")
+			for (j in splited) {
+				search.push( toFuzzy[i].id + "]]]" + splited[j])
+			}
 		}
 		
 		let x = document.getElementsByClassName("card");
@@ -293,10 +300,7 @@
 				</p>
 				<div>
 					<button type="button" class="btn btn-default"
-						onclick="sendUpdateNote()">Okay</button>
-					<button type="button" class="btn btn-default"
-						onclick="deleteNote()">Delete</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						onclick="sendUpdateNote()" data-toggle="modal" data-target="#myModalUpdate">Okay</button>
 					<input type="color" id="bg" name="bg" value="#e66465" />
 				</div>
 				<div></div>

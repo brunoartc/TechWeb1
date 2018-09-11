@@ -72,6 +72,7 @@ public class DAO {
 				note.setContent(rs.getString("content"));
 				note.setCreationDate(rs.getDate("creation_date"));
 				note.setUpdatedDate(rs.getDate("update_date"));
+				note.setActive(rs.getBoolean("active"));
 				Note.add(note);
 			}
 			rs.close();

@@ -28,10 +28,11 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://rawgit.com/mattyork/fuzzy/master/fuzzy-min.js"></script>
 <script type="text/javascript">
-		//TODO : https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver & https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement
-		<% DAO dao = new DAO(); 
+	//TODO : https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver & https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement
+<%DAO dao = new DAO(); 
 		List<Note> respDb = dao.getLista();
 		StringBuilder fin = new StringBuilder();
+		StringBuilder cards = new StringBuilder();
 		for (Note x: respDb) {
 			fin.append("{");
 			fin.append("id:\'" + x.getId() + "\',");
@@ -40,92 +41,102 @@
 			fin.append("updateDate:\'" + x.getUpdatedDate() + "\'");
 			fin.append("}");
 			fin.append(',');
-		}
-		fin.deleteCharAt(fin.length()-1);
-		%>
-		
-		var toFuzzy = [<%out.print(fin.toString().replace("/n", ""));%>]
-
-		function addToDatabase(id, title, content, update) {
-			var card = {}
-			card.id = id;
-			card.title = title;
-			card.content = content;
-			card.updateDate = update;
-
-			toFuzzy.push(card)
-			console.log(toFuzzy);
-
-			var xhttp = new XMLHttpRequest();
-
-			xhttp.open("POST", "http://localhost:8080/TecWeb/Notes/add", true);
-			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhttp.send("title="+title+"&content="+content+"&bg=bg-warning");
-			console.log(123123)
-
-		}
-
-		function regxMatch() {
-			let searchinfo = document.getElementById('textopraprocura').value;
-			let matches = []
-			let x = document.getElementsByClassName("card");
-			for (i = 0; i < x.length; i++) {
-				x[i].style.display = "none";
-			}
-			for (i in toFuzzy) {
-				console.log(toFuzzy[i], 1111);
-				let regSearch = new RegExp(searchinfo, "g");
-				if (regSearch.test(toFuzzy[i].content) || regSearch.test(toFuzzy[i].title)) {
-					matches.push(toFuzzy[i].id)
-					document.getElementById(toFuzzy[i].id).style.display = 'inline-block'
-				}
-
+			
+			cards.append("<div class=\"card\" id='padrao' style='display: none;'>")
+			.append("<div class=\"card-body\">")
+				.append("<h5 class=\"card-title" + x.getBg() + "\" id=\"title\" contenteditable=\"true\">" + x.getTitle() + "</h5>")
+						.append("<p class=\"card-text\" id=\"content\" contenteditable=\"true\">" + x.getContent() + "</p>")
+						.append("<p class=\"card-text\" id=\"update\">")
+						.append("<small class=\"text-muted\">" + x.getUpdatedDate() + "</small>").append("</p>")
+						.append("</div>").append("</div>");
 
 			}
+			fin.deleteCharAt(fin.length() - 1);%>
+	var toFuzzy = [
+<%out.print(fin.toString().replace("/n", ""));%>
+	]
 
+	function addToDatabase(id, title, content, update) {
+		var card = {}
+		card.id = id;
+		card.title = title;
+		card.content = content;
+		card.updateDate = update;
 
-			console.log(matches);
+		toFuzzy.push(card)
+		console.log(toFuzzy);
 
+		var xhttp = new XMLHttpRequest();
+
+		xhttp.open("POST", "http://localhost:8080/TecWeb/Notes/add", true);
+		xhttp.setRequestHeader("Content-type",
+				"application/x-www-form-urlencoded");
+		xhttp.send("title=" + title + "&content=" + content + "&bg=bg-warning");
+		console.log(123123)
+
+	}
+
+	function regxMatch() {
+		let searchinfo = document.getElementById('textopraprocura').value;
+		let matches = []
+		let x = document.getElementsByClassName("card");
+		for (i = 0; i < x.length; i++) {
+			x[i].style.display = "none";
+		}
+		for (i in toFuzzy) {
+			console.log(toFuzzy[i], 1111);
+			let regSearch = new RegExp(searchinfo, "g");
+			if (regSearch.test(toFuzzy[i].content)
+					|| regSearch.test(toFuzzy[i].title)) {
+				matches.push(toFuzzy[i].id)
+				document.getElementById(toFuzzy[i].id).style.display = 'inline-block'
+			}
 
 		}
 
-		function fuzzuezauza() {
-			var searchfor = document.getElementById('textopraprocura').value;
-			// console.log(typeof searchfor);
-			var options = {
-				extract: function(element) {
-					return element.title;
-				}
-			};
-			// // Filter!
-			var filtered = fuzzy.filter(searchfor, toFuzzy, options);
-			console.log(filtered);
+		console.log(matches);
 
-			// TODO: colocar todos os cards como hidden e passar pelos ids para mostrar eles um por um
+	}
 
-		}
+	function fuzzuezauza() {
+		var searchfor = document.getElementById('textopraprocura').value;
+		// console.log(typeof searchfor);
+		var options = {
+			extract : function(element) {
+				return element.title;
+			}
+		};
+		// // Filter!
+		var filtered = fuzzy.filter(searchfor, toFuzzy, options);
+		console.log(filtered);
 
-		function addNote() {
-			var cardsDiv = document.getElementById('cards');
-			console.log(cardsDiv.lastChild);
-			var divtest = document.getElementById('padrao').cloneNode(true);
-			var divModal = document.getElementById('modal-info');
+		// TODO: colocar todos os cards como hidden e passar pelos ids para mostrar eles um por um
 
-			var d = new Date();
+	}
 
-			divtest.querySelector("#title").innerHTML = divModal.querySelector("#title").innerHTML
-			divtest.querySelector("#content").innerHTML = divModal.querySelector("#content").innerHTML
-			divtest.querySelector("#update").innerHTML = d.getUTCFullYear()
+	function addNote() {
+		var cardsDiv = document.getElementById('cards');
+		console.log(cardsDiv.lastChild);
+		var divtest = document.getElementById('padrao').cloneNode(true);
+		var divModal = document.getElementById('modal-info');
 
-			divtest.style.display = 'inline-block';
-			divtest.id = toFuzzy.length + 1
+		var d = new Date();
 
-			addToDatabase(divtest.id, divtest.querySelector("#title").innerHTML,
+		divtest.querySelector("#title").innerHTML = divModal
+				.querySelector("#title").innerHTML
+		divtest.querySelector("#content").innerHTML = divModal
+				.querySelector("#content").innerHTML
+		divtest.querySelector("#update").innerHTML = d.getUTCFullYear()
+
+		divtest.style.display = 'inline-block';
+		divtest.id = toFuzzy.length + 1
+
+		addToDatabase(divtest.id, divtest.querySelector("#title").innerHTML,
 				divtest.querySelector("#content").innerHTML, divtest
-				.querySelector("#update").innerHTML)
-			cardsDiv.appendChild(divtest);
-		}
-	</script>
+						.querySelector("#update").innerHTML)
+		cardsDiv.appendChild(divtest);
+	}
+</script>
 </head>
 
 <body>
@@ -140,7 +151,7 @@
 					<button class="btn btn-secondary" type="button" name="button"
 						onclick="fuzzuezauza()">P.O.C Search</button>
 					<button class="btn btn-primary" type="button" name="button"
-						onclick="regxMatch()">P.O.C 22 Search</button>
+						onclick="regxMatch()">P.O.C RegEx Search</button>
 					<button type="button" class="btn btn-info btn-lg"
 						data-toggle="modal" data-target="#myModal">Create note</button>
 				</div>

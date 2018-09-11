@@ -130,5 +130,19 @@ public class DAO {
 		}
 
 	}
+	
+	public void delete(int id) {
+		String sql = "UPDATE Notes SET " + "active=false WHERE id=?";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			stmt.setInt(1, id);
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 
 }

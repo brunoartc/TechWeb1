@@ -5,6 +5,7 @@ title VARCHAR(15),
 content VARCHAR(255),
 creation_date TIMESTAMP,
 update_date TIMESTAMP,
+active BOOLEAN DEFAULT true,
 PRIMARY KEY (ID))
 
 INSERT into Notes(bg,title,content,creation_date,update_date) VALUES (

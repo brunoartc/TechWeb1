@@ -18,6 +18,7 @@ public class Note {
 		this.content = content;
 		this.creationDate = creationDate;
 		this.updatedDate = updatedDate;
+		this.active = true;
 	}
 
 	public Note() {
@@ -29,6 +30,7 @@ public class Note {
 	private String content;
 	private Date creationDate;
 	private Date updatedDate;
+	private Boolean active;
 
 	public int getId() {
 		return id;
@@ -76,6 +78,14 @@ public class Note {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+	
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+	
+	public Boolean getActive() {
+		return this.active;
 	}
 
 }

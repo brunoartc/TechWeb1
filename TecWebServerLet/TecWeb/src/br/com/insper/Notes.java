@@ -48,17 +48,34 @@ public class Notes extends HttpServlet {
 		if (request.getParameter("id") != null) {
 
 			if (dao.getListaWhere(Integer.parseInt(request.getParameter("id"))).size() > 0)
-				dao.atualiza(new Note(request.getParameter("bg"), request.getParameter("title").replace("/t", "").replace("\n", ""),
-						request.getParameter("content").replace("\t", "").replace("\n", " "), new Date(System.currentTimeMillis()),
-						new Date(System.currentTimeMillis())), Integer.parseInt(request.getParameter("id")));
+				dao.atualiza(
+						new Note(request.getParameter("bg"),
+								request.getParameter("title").replace("\t", "").replace("\n", " "),
+								request.getParameter("content").replace("\t", "").replace("\n", " "),
+								new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis())),
+						Integer.parseInt(request.getParameter("id")));
 
 		} else {
-			dao.adiciona(
-					new Note(request.getParameter("bg"), request.getParameter("title"), request.getParameter("content"),
-							new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis())));
+			dao.adiciona(new Note(request.getParameter("bg"),
+					request.getParameter("title").replace("\t", "").replace("\n", " "),
+					request.getParameter("content").replace("\t", "").replace("\n", " "),
+					new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis())));
 		}
 		dao.close();
 		doGet(request, response);
 	}
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		DAO dao = new DAO();
+		System.out.println(request.getParameter("id"));
+		if (request.getParameter("id") != null) {
+			dao.delete(Integer.parseInt(request.getParameter("id")));
+		}
+		dao.close();
+		doGet(request, response);
+	}
+	
+	
 
 }

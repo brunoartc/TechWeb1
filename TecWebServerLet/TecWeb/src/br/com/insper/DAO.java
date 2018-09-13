@@ -118,6 +118,48 @@ public class DAO {
 		}
 
 	}
+	
+	public void adicionaUsuario(Users user) {
+		String sql = "INSERT INTO Usuario" + "(username,password,lastAccess) values(?,?,?)";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			stmt.setString(1, user.getUsername());
+			stmt.setString(2, user.getPassword());
+			stmt.setDate(3, user.getLastAccess());
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void checkLogin(String username, String password){
+
+		int flag = 0;  
+		ResultSet rs;
+		try {
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Usuarios WHERE username=? and password");
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				flag = rs.getInt("ID");
+			}
+			rs.close();
+			stmt.close();
+			if (flag != 0) {
+				loggedUser = flag;
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+
+		
+	}
+	
 
 	public void atualiza(Note note, int id) {
 		String sql = "UPDATE Notes SET " + "bg=?, title=?, content=?, update_date=? WHERE id=? AND user_id=?";

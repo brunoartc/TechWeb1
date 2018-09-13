@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DAO {
+	
+	private int loggedUser = 1;
 
 	private Connection connection = null;
 
@@ -32,8 +34,9 @@ public class DAO {
 
 		ResultSet rs;
 		try {
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Notes WHERE id=?");
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Notes WHERE id=? AND user_id=?");
 			stmt.setInt(1,id);
+			stmt.setInt(2, loggedUser);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Note note = new Note();
@@ -67,6 +70,7 @@ public class DAO {
 			while (rs.next()) {
 				Note note = new Note();
 				note.setId(rs.getInt("id"));
+				note.setUserId(rs.getInt("user_id"));
 				note.setBg(rs.getString("bg"));
 				note.setTitle(rs.getString("title"));
 				note.setContent(rs.getString("content"));
@@ -97,14 +101,15 @@ public class DAO {
 	}
 
 	public void adiciona(Note note) {
-		String sql = "INSERT INTO Notes" + "(bg,title,content,creation_date,update_date) values(?,?,?,?,?)";
+		String sql = "INSERT INTO Notes" + "(user_id,bg,title,content,creation_date,update_date) values(?,?,?,?,?,?)";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(sql);
-			stmt.setString(1, note.getBg());
-			stmt.setString(2, note.getTitle());
-			stmt.setString(3, note.getContent());
-			stmt.setDate(4, note.getCreationDate());
-			stmt.setDate(5, note.getUpdatedDate());
+			stmt.setInt(1, loggedUser);
+			stmt.setString(2, note.getBg());
+			stmt.setString(3, note.getTitle());
+			stmt.setString(4, note.getContent());
+			stmt.setDate(5, note.getCreationDate());
+			stmt.setDate(6, note.getUpdatedDate());
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
@@ -115,7 +120,7 @@ public class DAO {
 	}
 
 	public void atualiza(Note note, int id) {
-		String sql = "UPDATE Notes SET " + "bg=?, title=?, content=?, update_date=? WHERE id=?";
+		String sql = "UPDATE Notes SET " + "bg=?, title=?, content=?, update_date=? WHERE id=? AND user_id=?";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setString(1, note.getBg());
@@ -123,6 +128,7 @@ public class DAO {
 			stmt.setString(3, note.getContent());
 			stmt.setDate(4, note.getUpdatedDate());
 			stmt.setInt(5, id);
+			stmt.setInt(6, loggedUser);
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
@@ -133,10 +139,11 @@ public class DAO {
 	}
 	
 	public void delete(int id) {
-		String sql = "UPDATE Notes SET " + "active=false WHERE id=?";
+		String sql = "UPDATE Notes SET " + "active=false WHERE id=? AND user_id=?";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setInt(1, id);
+			stmt.setInt(2, loggedUser);
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {

@@ -1,4 +1,5 @@
 package br.com.insper;
+
 import java.sql.Date;
 
 public class Note {
@@ -10,9 +11,11 @@ public class Note {
 	 **/
 
 	private int id;
+	private int userId;
+
 	public Note(String bg, String title, String content, Date creationDate, Date updatedDate) {
 		super();
-		//this.id = id;
+		//this.userId = userId;
 		this.bg = bg;
 		this.title = title;
 		this.content = content;
@@ -79,13 +82,21 @@ public class Note {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-	
+
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
-	
+
 	public Boolean getActive() {
 		return this.active;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 }

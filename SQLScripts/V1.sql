@@ -1,5 +1,6 @@
 CREATE TABLE Notes(
 ID int NOT NULL AUTO_INCREMENT,
+USER_ID int,
 bg VARCHAR(20),
 title VARCHAR(15),
 content VARCHAR(255),

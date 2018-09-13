@@ -64,18 +64,16 @@ public class Notes extends HttpServlet {
 		dao.close();
 		doGet(request, response);
 	}
-	
+
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		DAO dao = new DAO();
 		System.out.println(request.getParameter("id"));
-		if (request.getParameter("id") != null) {
+		if (request.getParameter("id") != null && request.getParameter("user_id") != null) {
 			dao.delete(Integer.parseInt(request.getParameter("id")));
 		}
 		dao.close();
 		doGet(request, response);
 	}
-	
-	
 
 }

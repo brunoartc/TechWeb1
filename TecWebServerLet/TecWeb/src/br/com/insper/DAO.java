@@ -140,7 +140,9 @@ public class DAO {
 		int flag = 0;  
 		ResultSet rs;
 		try {
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Usuarios WHERE username=? and password");
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Usuarios WHERE username=? and password=?");
+			stmt.setString(1, username);
+			stmt.setString(2, password);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				flag = rs.getInt("ID");

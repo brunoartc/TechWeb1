@@ -41,6 +41,10 @@ public class SignIn extends HttpServlet {
 		out.println("</form>");
 		out.println("</body></html>");
 	}
+	
+	protected void SignUp(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect("SignUp.java");
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -56,7 +60,7 @@ public class SignIn extends HttpServlet {
 		}
 		
 		else {
-			out.println("Usuario ja existente");
+			out.println("Usuario e/ou senha incorreto");
 		}
 		dao.close();
 	}

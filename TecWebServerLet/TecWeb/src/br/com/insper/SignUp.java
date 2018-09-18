@@ -59,6 +59,7 @@ public class SignUp extends HttpServlet {
 		
 		else {
 			out.println("Usuario ja existente");
+			response.sendRedirect("/SignUp.java");
 		}
 		dao.close();
 		

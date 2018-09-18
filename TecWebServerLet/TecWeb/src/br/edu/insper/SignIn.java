@@ -1,9 +1,8 @@
-package br.com.insper;
+package br.edu.insper;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,17 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.insper.DAO;
+import br.com.insper.Users;
+
 /**
- * Servlet implementation class signUp
+ * Servlet implementation class SignIn
  */
-@WebServlet("/SignUp")
-public class SignUp extends HttpServlet {
+@WebServlet("/SignIn")
+public class SignIn extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SignUp() {
+    public SignIn() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -49,12 +51,9 @@ public class SignUp extends HttpServlet {
 		DAO dao = new DAO();
 		PrintWriter out = response.getWriter();
 		Users novo = new Users();
-		boolean flag = dao.checkSignup(request.getParameter("Usuario"));
+		boolean flag = dao.checkLogin(request.getParameter("Usuario"),request.getParameter("Senha"));
 		if (flag) {
-		novo.setUsername(request.getParameter("Usuario"));
-		novo.setPassword(request.getParameter("Senha"));
-		novo.setLastAccess(new Date(System.currentTimeMillis()));
-		dao.adicionaUsuario(novo);
+			response.sendRedirect("/teste.jsp");
 		}
 		
 		else {
@@ -62,7 +61,5 @@ public class SignUp extends HttpServlet {
 		}
 		dao.close();
 	}
-	
-	
+	}
 
-}

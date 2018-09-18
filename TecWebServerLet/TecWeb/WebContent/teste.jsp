@@ -303,6 +303,12 @@
 						onclick="sendUpdateNote()" data-toggle="modal" data-target="#myModalUpdate">Okay</button>
 					<input type="color" id="bg" name="bg" value="#e66465" />
 				</div>
+				<div>
+					<form action="${pageContext.request.contextPath}/SignUp" method="post">
+	    				<input type="submit" name="button1" value="Button 1" />
+					    
+					</form>
+				</div>
 				<div></div>
 
 

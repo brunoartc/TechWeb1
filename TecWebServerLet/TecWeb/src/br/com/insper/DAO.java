@@ -17,7 +17,7 @@ public class DAO {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			try {
-				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/TecWeb", "root", "root");
+				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tecweb", "teste", "123");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -135,9 +135,22 @@ public class DAO {
 
 	}
 	
-	public void checkLogin(String username, String password){
+	protected boolean checkSignup(String user) {
+		try {
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Usuarios WHERE username=?");
+			return (true);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return (false);
+		}
+	}
+	
+	public boolean checkLogin(String username, String password){
 
 		int flag = 0;  
+		String user = null;
+		String pass = null;
 		ResultSet rs;
 		try {
 			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Usuarios WHERE username=? and password=?");
@@ -145,19 +158,34 @@ public class DAO {
 			stmt.setString(2, password);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
+				user = rs.getString("username");
+				pass = rs.getString("password");
 				flag = rs.getInt("ID");
 			}
 			rs.close();
 			stmt.close();
-			if (flag != 0) {
-				loggedUser = flag;
+			if (user == username && pass == password) {
+				if (flag != 0) {
+					loggedUser = flag;
+				}
+				rs.close();
+				stmt.close();
+				return (true);
 			}
+			else {
+				rs.close();
+				stmt.close();
+				return false;
+			}
+			
+			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			
 		}
+		return false;
 
 		
 	}

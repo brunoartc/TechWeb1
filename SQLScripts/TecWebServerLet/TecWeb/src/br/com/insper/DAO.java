@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DAO {
 	
-	private int loggedUser;
+	private int loggedUser = 1;
 
 	private Connection connection = null;
 
@@ -17,7 +17,7 @@ public class DAO {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			try {
-				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tecweb", "root", "root");
+				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/TecWeb", "root", "root");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -36,7 +36,7 @@ public class DAO {
 		try {
 			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Notes WHERE id=? AND user_id=?");
 			stmt.setInt(1,id);
-			stmt.setInt(2, this.loggedUser);
+			stmt.setInt(2, loggedUser);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Note note = new Note();
@@ -65,9 +65,7 @@ public class DAO {
 
 		ResultSet rs;
 		try {
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Notes WHERE USER_ID=?");
-			stmt.setInt(1, this.loggedUser);
-			System.out.println(this.loggedUser);
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Notes");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Note note = new Note();
@@ -106,7 +104,7 @@ public class DAO {
 		String sql = "INSERT INTO Notes" + "(user_id,bg,title,content,creation_date,update_date) values(?,?,?,?,?,?)";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(sql);
-			stmt.setInt(1, this.loggedUser);
+			stmt.setInt(1, loggedUser);
 			stmt.setString(2, note.getBg());
 			stmt.setString(3, note.getTitle());
 			stmt.setString(4, note.getContent());
@@ -137,76 +135,29 @@ public class DAO {
 
 	}
 	
-	protected boolean checkSignup(String user) {
-		try {
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM usuario WHERE username=?");
-			return (true);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return (false);
-		}
-	}
-	
-	protected void deleteUser(String user) {
-		ResultSet rs;
-		try {
-			PreparedStatement stmt = connection.prepareStatement("DELETE FROM usuario WHERE username=?");
-			rs = stmt.executeQuery();
-			
-			rs.close();
-			stmt.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		}
-		
-	}
-	
-	public boolean checkLogin(String username, String password){
+	public void checkLogin(String username, String password){
 
 		int flag = 0;  
-		String user = null;
-		String pass = null;
 		ResultSet rs;
 		try {
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM usuario WHERE username=? and password=?");
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Usuarios WHERE username=? and password=?");
 			stmt.setString(1, username);
 			stmt.setString(2, password);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
-				user = rs.getString("username");
-				pass = rs.getString("password");
 				flag = rs.getInt("ID");
-				System.out.println(user+pass+flag+username+password+pass.equals(password)+user.equals(username));
-				System.out.println(flag);
 			}
 			rs.close();
 			stmt.close();
-			if (user.equals(username) && pass.equals(password)) {
-				if (flag != 0) {
-					this.loggedUser = flag;
-					System.out.println(this.loggedUser);
-				}
-				rs.close();
-				stmt.close();
-				return (true);
+			if (flag != 0) {
+				loggedUser = flag;
 			}
-			else {
-				rs.close();
-				stmt.close();
-				return false;
-			}
-			
-			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			
 		}
-		return false;
 
 		
 	}
@@ -221,7 +172,7 @@ public class DAO {
 			stmt.setString(3, note.getContent());
 			stmt.setDate(4, note.getUpdatedDate());
 			stmt.setInt(5, id);
-			stmt.setInt(6, this.loggedUser);
+			stmt.setInt(6, loggedUser);
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
@@ -231,14 +182,12 @@ public class DAO {
 
 	}
 	
-	
-	
 	public void delete(int id) {
 		String sql = "UPDATE Notes SET " + "active=false WHERE id=? AND user_id=?";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setInt(1, id);
-			stmt.setInt(2, this.loggedUser);
+			stmt.setInt(2, loggedUser);
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {

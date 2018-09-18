@@ -11,16 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class SignIn
+ * Servlet implementation class signUp
  */
-@WebServlet("/SignIn")
-public class SignIn extends HttpServlet {
+@WebServlet("/SignUp")
+public class SignUp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SignIn() {
+    public SignUp() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,11 +35,9 @@ public class SignIn extends HttpServlet {
 		out.println("<form method='post'>");
 		out.println("Usuario: <input type='text' name='Usuario'><br>");
 		out.println("Senha: <input type='text' name='Senha' ><br>");
-		out.println("<input type='submit' value='Enviar'>");
-		out.println("<input type='submit' value='SignUp' onclick='form.action='SignUp';>");
-
+		out.println("<input type='submit' value='Submit'>");	
 		out.println("</form>");
-		out.println("</body></html>");
+		out.println("<body><html>");
 	}
 
 	/**
@@ -48,17 +46,14 @@ public class SignIn extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		DAO dao = new DAO();
-		PrintWriter out = response.getWriter();
 		Users novo = new Users();
-		boolean flag = dao.checkLogin(request.getParameter("Usuario"),request.getParameter("Senha"));
-		if (flag) {
-			response.sendRedirect("teste.jsp");
-		}
+		novo.setUsername(request.getParameter("Usuario"));
+		novo.setPassword(request.getParameter("Senha"));
+		novo.setLastAccess(new Date(System.currentTimeMillis()));
 		
-		else {
-			out.println("Usuario ja existente");
-		}
+		dao.adicionaUsuario(novo);
+	
 		dao.close();
 	}
-	}
 
+}

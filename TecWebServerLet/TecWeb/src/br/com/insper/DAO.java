@@ -146,6 +146,22 @@ public class DAO {
 		}
 	}
 	
+	protected void deleteUser(String user) {
+		ResultSet rs;
+		try {
+			PreparedStatement stmt = connection.prepareStatement("DELETE FROM Usuarios WHERE username=?");
+			rs = stmt.executeQuery();
+			
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+		
+	}
+	
 	public boolean checkLogin(String username, String password){
 
 		int flag = 0;  
@@ -209,6 +225,8 @@ public class DAO {
 		}
 
 	}
+	
+	
 	
 	public void delete(int id) {
 		String sql = "UPDATE Notes SET " + "active=false WHERE id=? AND user_id=?";

@@ -29,6 +29,11 @@ public class DAO {
 
 	}
 	
+	private void getLoggedUser() {
+		this.loggedUser = 0;
+		
+	}
+	
 	public List<Note> getListaWhere(int id) {
 		List<Note> Note = new ArrayList<Note>();
 
@@ -185,10 +190,11 @@ public class DAO {
 			rs.close();
 			stmt.close();
 			if (user.equals(username) && pass.equals(password)) {
-				if (flag != 0) {
-					this.loggedUser = flag;
-					System.out.println(this.loggedUser);
-				}
+				
+				this.loggedUser = flag;
+				System.out.println(this.loggedUser);
+				System.out.println(loggedUser);
+				
 				rs.close();
 				stmt.close();
 				return (true);

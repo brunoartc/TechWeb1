@@ -36,9 +36,10 @@ public class SignIn extends HttpServlet {
 		out.println("Usuario: <input type='text' name='Usuario'><br>");
 		out.println("Senha: <input type='text' name='Senha' ><br>");
 		out.println("<input type='submit' value='Enviar'>");
-		out.println("<input type='submit' value='SignUp' onclick='form.action='SignUp';>");
+		
 
 		out.println("</form>");
+		out.println("<button onclick=\"location.href = 'SignUp';\">teste</button>");
 		out.println("</body></html>");
 	}
 	

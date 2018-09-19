@@ -15,9 +15,11 @@ public class DAO {
 
 	public DAO() {
 		try {
+			
 			Class.forName("com.mysql.jdbc.Driver");
 			try {
 				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tecweb", "root", "root");
+				this.getLoggedUser();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -30,7 +32,28 @@ public class DAO {
 	}
 	
 	private void getLoggedUser() {
-		this.loggedUser = 0;
+		String sql = "SELECT * FROM logged";
+		
+		ResultSet rs;
+		
+			
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				this.loggedUser = rs.getInt("id");
+			}
+			stmt.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("logged user ="+ this.loggedUser);
+		
+		//this.loggedUser = 0;
+		
 		
 	}
 	
@@ -139,7 +162,7 @@ public class DAO {
 			
 			PreparedStatement stmt3 = connection.prepareStatement(sql3);
 			stmt3.setString(1, user);
-			rs = stmt.executeQuery();
+			rs = stmt3.executeQuery();
 			while (rs.next()) {
 				id = rs.getInt("id");
 			}

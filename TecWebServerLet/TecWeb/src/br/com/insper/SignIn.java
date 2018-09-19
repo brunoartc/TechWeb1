@@ -53,6 +53,7 @@ public class SignIn extends HttpServlet {
 		Users novo = new Users();
 		boolean flag = dao.checkLogin(request.getParameter("Usuario"),request.getParameter("Senha"));
 		if (flag) {
+			dao.changeLogged(request.getParameter("Usuario"));
 			response.sendRedirect("teste.jsp");
 		}
 		

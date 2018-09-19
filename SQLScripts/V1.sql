@@ -23,3 +23,4 @@ password VARCHAR(64),
 lastAccess TIMESTAMP DEFAULT current_timestamp,
 PRIMARY KEY (ID));
 
+ CREATE TABLE logged(ID int NOT NULL, PRIMARY KEY(ID));

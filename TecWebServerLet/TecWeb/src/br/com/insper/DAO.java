@@ -126,6 +126,42 @@ public class DAO {
 
 	}
 	
+	public void changeLogged(String user) {
+		String sql = "DELETE FROM logged";
+		String sql2 = "INSERT INTO logged" + "(id) values (?)";
+		String sql3 = "SELECT * FROM usuario WHERE username=?";
+		ResultSet rs;
+		int id = 0;
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			stmt.execute();
+			stmt.close();
+			
+			PreparedStatement stmt3 = connection.prepareStatement(sql3);
+			stmt3.setString(1, user);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+				
+			stmt3.execute();
+			stmt3.close();
+			
+			
+			PreparedStatement stmt2 = connection.prepareStatement(sql2);
+			stmt2.setInt(1, id);
+			stmt2.execute();
+			stmt2.close();
+			
+			
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public void adicionaUsuario(Users user) {
 		String sql = "INSERT INTO Usuario" + "(username,password,lastAccess) values(?,?,?)";
 		try {

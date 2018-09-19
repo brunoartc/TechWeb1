@@ -36,16 +36,13 @@ public class SignIn extends HttpServlet {
 		out.println("Usuario: <input type='text' name='Usuario'><br>");
 		out.println("Senha: <input type='text' name='Senha' ><br>");
 		out.println("<input type='submit' value='Enviar'>");
-		out.println("<input type='submit' value='SignUp' onclick='form.action='SignUp';>");
+		out.println("<input type='submit' value='SignUp' onclick='window.location='Signup'';>");
 
 		out.println("</form>");
 		out.println("</body></html>");
 	}
 	
-	protected void SignUp(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("SignUp.java");
-	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -56,6 +53,7 @@ public class SignIn extends HttpServlet {
 		Users novo = new Users();
 		boolean flag = dao.checkLogin(request.getParameter("Usuario"),request.getParameter("Senha"));
 		if (flag) {
+			dao.changeLogged(request.getParameter("Usuario"));
 			response.sendRedirect("teste.jsp");
 		}
 		

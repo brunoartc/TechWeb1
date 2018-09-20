@@ -1,7 +1,6 @@
 package br.com.insper;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,10 +32,7 @@ public class ServLet extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		DAO dao = new DAO();
-		// StringBuilder resp = new StringBuilder();
-		List<Note> respDb = dao.getLista();
 		dao.close();
-		System.out.println(respDb.get(0).getCreationDate().toString());
 
 		response.getWriter().append("Served at: ").append(request.getContextPath()).append(": with <3");
 	}

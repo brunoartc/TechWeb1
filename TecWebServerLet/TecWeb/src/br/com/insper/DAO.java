@@ -17,8 +17,10 @@ public class DAO {
 		try {
 			
 			Class.forName("com.mysql.jdbc.Driver");
+			//Class.forName("com.mysql.jdbc.GoogleDriver"); para o gcoud, classe no diretorio (procurar)
 			try {
 				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tecweb", "root", "root");
+				//connection = DriverManager.getConnection("jdbc:google:mysql://<Nome da conexão da instância>/TecWeb","root","root"); para o gcloud tmb
 				this.getLoggedUser();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -202,14 +204,7 @@ public class DAO {
 	}
 	
 	protected boolean checkSignup(String user) {
-		try {
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM usuario WHERE username=?");
-			return (true);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return (false);
-		}
+		return true;
 	}
 	
 	protected void deleteUser(String user) {

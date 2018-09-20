@@ -154,7 +154,7 @@ public class DAO {
 	public void changeLogged(String user) {
 		String sql = "DELETE FROM logged";
 		String sql2 = "INSERT INTO logged" + "(id) values (?)";
-		String sql3 = "SELECT * FROM usuario WHERE username=?";
+		String sql3 = "SELECT * FROM Usuario WHERE username=?";
 		ResultSet rs;
 		int id = 0;
 		try {
@@ -210,7 +210,7 @@ public class DAO {
 	protected void deleteUser(String user) {
 		ResultSet rs;
 		try {
-			PreparedStatement stmt = connection.prepareStatement("DELETE FROM usuario WHERE username=?");
+			PreparedStatement stmt = connection.prepareStatement("DELETE FROM Usuario WHERE username=?");
 			rs = stmt.executeQuery();
 			
 			rs.close();
@@ -230,7 +230,7 @@ public class DAO {
 		String pass = null;
 		ResultSet rs;
 		try {
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM usuario WHERE username=? and password=?");
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Usuario WHERE username=? and password=?");
 			stmt.setString(1, username);
 			stmt.setString(2, password);
 			rs = stmt.executeQuery();

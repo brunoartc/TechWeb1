@@ -4,9 +4,9 @@ USER_ID int,
 bg VARCHAR(20),
 title VARCHAR(15),
 content VARCHAR(255),
-creation_date TIMESTAMP,
-update_date TIMESTAMP,
-active BOOLEAN DEFAULT true,
+creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+active BOOLEAN DEFAULT 1,
 PRIMARY KEY (ID));
 
 INSERT into Notes(bg,title,content,creation_date,update_date) VALUES (
